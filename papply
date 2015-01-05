@@ -1,0 +1,4 @@
+#!/bin/sh
+pwd=$( pwd )
+modulepath="${pwd}/modules"
+sudo puppet apply manifests/site.pp --modulepath=${modulepath}

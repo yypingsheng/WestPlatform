@@ -1,4 +1,4 @@
 WestPlatform
 ============
 
-Automated deployment of data analysis platform based on Puppet
+Automated deployment of data analysis platform based on Puppet.

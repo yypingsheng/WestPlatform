@@ -1,0 +1,11 @@
+--2015-01-05 10:38:41--  http://tian-pc.example.com/
+Resolving tian-pc.example.com (tian-pc.example.com)... 192.168.28.4
+Connecting to tian-pc.example.com (tian-pc.example.com)|192.168.28.4|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 58 [text/html]
+Saving to: 'index.html.1'
+
+     0K                                                       100% 8.72M=0s
+
+2015-01-05 10:38:41 (8.72 MB/s) - 'index.html.1' saved [58/58]
+

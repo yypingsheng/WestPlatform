@@ -15,3 +15,17 @@ node 'tian-PC' {
     }
 }
 
+node 'hadoop-master' {    
+
+    include hadoop
+    include hadoop::params
+    include hadoop::cluster
+
+}
+
+node 'hadoop-slave1' {
+
+    include hadoop
+    include hadoop::params
+
+}

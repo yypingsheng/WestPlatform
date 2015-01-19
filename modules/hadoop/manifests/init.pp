@@ -19,14 +19,14 @@ class hadoop {
     ensure => directory,
     ower => '${hadoop::params::hadoop_user}',
     group => '${hadoop::params::hadoop_group}',
-    require => [ User['${hadoop::parama::hadoop_user}'], Group['${hadoop::params::hadoop_group}'],
+    require => [ User['${hadoop::parama::hadoop_user}'], Group['${hadoop::params::hadoop_group}'] ],
   }
 
   file { '/home/ubuntu/hadoop-2.2.0/dfs/data':
     ensure => directory,
     ower => '${hadoop::params::hadoop_user}',
     group => '${hadoop::params::hadoop_group}',
-    require => [ User['${hadoop::parama::hadoop_user}'], Group['${hadoop::params::hadoop_group}'],
+    require => [ User['${hadoop::parama::hadoop_user}'], Group['${hadoop::params::hadoop_group}'] ],
   }
 
   
@@ -34,7 +34,7 @@ class hadoop {
     ensure => directory,
     ower => '${hadoop::params::hadoop_user}',
     group => '${hadoop::params::hadoop_group}',
-    require => [ User['${hadoop::parama::hadoop_user}'], Group['${hadoop::params::hadoop_group}'],
+    require => [ User['${hadoop::parama::hadoop_user}'], Group['${hadoop::params::hadoop_group}'] ],
   }
 
   file { '/home/ubuntu/hadoop-2.2.0/etc/hadoop/hadoop-env.sh':

@@ -17,14 +17,14 @@ class hadoop {
 
   file { '/home/ubuntu/hadoop-2.2.0/dfs/name':
     ensure => directory,
-    ower => '${hadoop::params::hadoop_user}',
+    owner => '${hadoop::params::hadoop_user}',
     group => '${hadoop::params::hadoop_group}',
     require => [ User['${hadoop::params::hadoop_user}'], Group['${hadoop::params::hadoop_group}'] ],
   }
 
   file { '/home/ubuntu/hadoop-2.2.0/dfs/data':
     ensure => directory,
-    ower => '${hadoop::params::hadoop_user}',
+    owner => '${hadoop::params::hadoop_user}',
     group => '${hadoop::params::hadoop_group}',
     require => [ User['${hadoop::params::hadoop_user}'], Group['${hadoop::params::hadoop_group}'] ],
   }
@@ -32,13 +32,13 @@ class hadoop {
   
   file { '/home/ubuntu/hadoop-2.2.0/tmp':
     ensure => directory,
-    ower => '${hadoop::params::hadoop_user}',
+    owner => '${hadoop::params::hadoop_user}',
     group => '${hadoop::params::hadoop_group}',
     require => [ User['${hadoop::params::hadoop_user}'], Group['${hadoop::params::hadoop_group}'] ],
   }
 
   file { '/home/ubuntu/hadoop-2.2.0/etc/hadoop/hadoop-env.sh':
-    ower => '${hadoop::params:hadoop_user}',
+    owner => '${hadoop::params:hadoop_user}',
     group => '${hadoop::params:hadoop_group}',
     mode => 0664,
     alias => 'hadoop-env-sh',
@@ -46,7 +46,7 @@ class hadoop {
   }
 
   file { '/home/ubuntu/hadoop-2.2.0/etc/hadoop/yarn-env.sh':
-    ower => '${hadoop::params:hadoop_user}',
+    owner => '${hadoop::params:hadoop_user}',
     group => '${hadoop::params:hadoop_group}',
     mode => 0664,
     alias => 'yarn-env-sh',
@@ -54,7 +54,7 @@ class hadoop {
   }
 
   file { '/home/ubuntu/hadoop-2.2.0/etc/hadoop/master':
-    ower => '${hadoop::params:hadoop_user}',
+    owner => '${hadoop::params:hadoop_user}',
     group => '${hadoop::params:hadoop_group}',
     mode => 0664,
     alias => 'hadoop-master',
@@ -62,7 +62,7 @@ class hadoop {
   }
 
   file { '/home/ubuntu/hadoop-2.2.0/etc/hadoop/slaves':
-    ower => '${hadoop::params:hadoop_user}',
+    owner => '${hadoop::params:hadoop_user}',
     group => '${hadoop::params:hadoop_group}',
     mode => 0664,
     alias => 'hadoop-slave',
@@ -70,7 +70,7 @@ class hadoop {
   }
 
   file { '/home/ubuntu/hadoop-2.2.0/etc/hadoop/core-site.xml':
-    ower => '${hadoop::params:hadoop_user}',
+    owner => '${hadoop::params:hadoop_user}',
     group => '${hadoop::params:hadoop_group}',
     mode => 0664,
     alias => 'core-site-xml',
@@ -78,7 +78,7 @@ class hadoop {
   }
 
   file { '/home/ubuntu/hadoop-2.2.0/etc/hadoop/hdfs-site.xml':
-    ower => '${hadoop::params:hadoop_user}',
+    owner => '${hadoop::params:hadoop_user}',
     group => '${hadoop::params:hadoop_group}',
     mode => 0664,
     alias => 'hdfs-site-xml',
@@ -86,7 +86,7 @@ class hadoop {
   }
 
   file { '/home/ubuntu/hadoop-2.2.0/etc/hadoop/mapred-site.xml':
-    ower => '${hadoop::params:hadoop_user}',
+    owner => '${hadoop::params:hadoop_user}',
     group => '${hadoop::params:hadoop_group}',
     mode => 0664,
     alias => 'mapred-site-xml',
@@ -94,7 +94,7 @@ class hadoop {
   }
 
   file { '/home/ubuntu/hadoop-2.2.0/etc/hadoop/yarn-site.xml':
-    ower => '${hadoop::params:hadoop_user}',
+    owner => '${hadoop::params:hadoop_user}',
     group => '${hadoop::params:hadoop_group}',
     mode => 0664,
     alias => 'yarn-site-xml',

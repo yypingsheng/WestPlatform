@@ -17,6 +17,6 @@ class hadoop::cluster {
     command => './start-all.sh',
     cwd => '/home/ubuntu/hadoop-2.2.0/sbin',
     alias => 'start-all',
-    path => ['/bin', '/usr/bin', '/home/ubuntu/hadoop-2.2.0/bin'],
+    path => ['/bin', '/usr/bin', '/home/ubuntu/hadoop-2.2.0/sbin'],
   } 
 }

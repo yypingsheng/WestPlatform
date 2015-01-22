@@ -1,22 +1,22 @@
 class hadoop::cluster {
-  
-  # require hadoop::params
+
+  require hadoop::params
   require hadoop
 
-  exec { 'Format namenode':
+  exec { 'format namenode':
     command => './hdfs namenode -format',
-    cwd => '/home/ubuntu/hadoop-2.2.0/bin',
-    creates => '/home/ubuntu/hadoop-2.2.0/tmp/dfs/name/current/VERSION',
+    cwd => "${hadoop::params::hadoop_base}/hadoop-${hadoop::params::hadoop_version}/bin",
+    creates => "${hadoop::params::hadoop_base}/hadoop-${hadoop::params::hadoop_version}/tmp/dfs/name/current/VERSION",
     alias => 'format-hdfs',
-    path => ['/bin', '/usr/bin', '/home/ubuntu/hadoop-2.2.0/bin'],
+    path => ['/bin', 'sbin', '/usr/bin', '/usr/sbin', "${hadoop::params::hadoop_base}/hadoop-${hadoop::params::hadoop_version}/bin"],
     require => File['hadoop-master'],
-    before => Exec['start-all'],
+#   before => Exec['start-all'],
   }
 
-  exec { 'Start all services':
-    command => './start-all.sh',
-    cwd => '/home/ubuntu/hadoop-2.2.0/sbin',
-    alias => 'start-all',
-    path => ['/bin', '/usr/bin', '/home/ubuntu/hadoop-2.2.0/sbin'],
-  } 
+#  exec { 'start all services':
+#    command => './start-all.sh',
+#    cwd => '${hadoop::params::hadoop_base}/hadoop-${hadoop::params::hadoop_version}/sbin',
+#    alias => 'start-all',
+#    path => ['/bin', 'sbin', '/usr/bin', '/usr/sbin', '${hadoop::params::hadoop_base}/hadoop-${hadoop::params::hadoop_version}/sbin'],
+#  }
 }

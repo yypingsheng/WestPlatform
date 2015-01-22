@@ -15,6 +15,16 @@ class hadoop {
     require => Group["${hadoop::params::hadoop_group}"],
   }
 
+  #Add "sudo" privilege for hadoop_user
+
+  file { '/etc/sudoers.d/secure-hadoop-user':
+    ensure => present,
+    owner => 'root',
+    group => 'root',
+    alias => 'secure-hadoop-user',
+    content => template('hadoop/sudoers/hadoop_sudoers.erb'),
+  }
+
   #Add Nodes To Hosts, Make Local DNS
 
   file { '/etc/hosts':

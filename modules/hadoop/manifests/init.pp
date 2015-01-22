@@ -2,126 +2,224 @@ class hadoop {
 
   require hadoop::params
 
-  user { "${hadoop::params::hadoop_user}":
-    ensure => present,
-  }
+  #Add Hadoop User and Group
 
   group { "${hadoop::params::hadoop_group}":
     ensure => present,
-  } 
+  }
 
-#  file { '/etc/profile.d/hadoop.sh':
-#    ensure => present,
-#    owner => 'root',
-#    group => 'root',
-#    alias => 'hadoop-profile',
-#    content => template('hadoop/bash_profile.erb'),
-#  }
+  user { "${hadoop::params::hadoop_user}":
+    ensure => present,
+    home => "/home/${hadoop::params::hadoop_user}",
+    managehome => true,
+    require => Group["${hadoop::params::hadoop_group}"],
+  }
 
-#  file { '/home/ubuntu/.bashrc':
+  #Add Nodes To Hosts, Make Local DNS
+
+  file { '/etc/hosts':
+    ensure => present,
+    owner => 'root',
+    group => 'root',
+    mode => 0644,
+    alias => 'etc-hosts',
+    source => 'puppet:///modules/hadoop/hosts/hosts',
+  }
+
+  #Configure SSH, No Password Login
+
+  file { "/home/${hadoop::params::hadoop_user}/.ssh/":
+    ensure => "directory",
+    owner => "${hadoop::params::hadoop_user}",
+    group => "${hadoop::params::hadoop_group}",
+    mode => 0700,
+    alias => "${hadoop::params::hadoop_user}-ssh-dir",
+  }
+
+  file { "/home/${hadoop::params::hadoop_user}/.ssh/id_rsa.pub":
+    ensure => present,
+    owner => "${hadoop::params::hadoop_user}",
+    group => "${hadoop::params::hadoop_group}",
+    mode => 0644,
+    source => 'puppet:///modules/hadoop/ssh/id_rsa.pub',
+    require => File["${hadoop::params::hadoop_user}-ssh-dir"],
+  }
+
+  file { "/home/${hadoop::params::hadoop_user}/.ssh/id_rsa":
+    ensure => present,
+    owner => "${hadoop::params::hadoop_user}",
+    group => "${hadoop::params::hadoop_group}",
+    mode => 0600,
+    source => 'puppet:///modules/hadoop/ssh/id_rsa',
+    require => File["${hadoop::params::hadoop_user}-ssh-dir"],
+  }
+
+  file { "/home/${hadoop::params::hadoop_user}/.ssh/authorized_keys":
+    ensure => present,
+    owner => "${hadoop::params::hadoop_user}",
+    group => "${hadoop::params::hadoop_group}",
+    mode => 0644,
+    source => 'puppet:///modules/hadoop/ssh/id_rsa.pub',
+    require => File["${hadoop::params::hadoop_user}-ssh-dir"],
+  }
+
+  #Untar Hadoop Package
+
+  file {"${hadoop::params::hadoop_base}":
+    ensure => directory,
+    owner => "${hadoop::params::hadoop_user}",
+    group => "${hadoop::params::hadoop_group}",
+    mode  => 0755,
+    alias => 'hadoop-base',
+  }
+
+  file { "${hadoop::params::hadoop_base}/hadoop-${hadoop::params::hadoop_version}.tar.gz":
+    owner => "${hadoop::params::hadoop_user}",
+    group => "${hadoop::params::hadoop_group}",
+    mode => 0664,
+    source => "puppet:///modules/hadoop/hadoop-${hadoop::params::hadoop_version}.tar.gz",
+    alias => 'hadoop-source-tgz',
+    before => Exec['untar-hadoop'],
+    require => File['hadoop-base'],
+  }
+
+  exec { "untar hadoop-${hadoop::params::hadoop_version}.tar.gz":
+    command => "tar -zxf hadoop-${hadoop::params::hadoop_version}.tar.gz",
+    cwd => "${hadoop::params::hadoop_base}",
+    creates => "${hadoop::params::hadoop_base}/hadoop-${hadoop::params::hadoop_version}",
+    alias => 'untar-hadoop',
+    onlyif => "test 0 -eq $(ls -al ${hadoop::params::hadoop_base}/hadoop-${hadoop::params::hadoop_version} | grep -c bin)",
+    require => File['hadoop-source-tgz'],
+    user => "${hadoop::params::hadoop_user}",
+    before => File['hadoop-app-dir'],
+    path => ['/bin', '/usr/bin', '/usr/sbin'],
+  }
+
+  file { "${hadoop::params::hadoop_base}/hadoop-${hadoop::params::hadoop_version}":
+     ensure => directory,
+     mode => 0755,
+     owner => "${hadoop::params::hadoop_user}",
+     group => "${hadoop::params::hadoop_group}",
+     alias => "hadoop-app-dir",
+     require => Exec['untar-hadoop'],
+  }
+
+  #Set Hadoop Environment
+
+  file { '/etc/profile.d/hadoop.sh':
+    ensure => present,
+    owner => 'root',
+    group => 'root',
+    alias => 'hadoop-profile',
+    content => template('hadoop/environ/hadoop_profile.erb'),
+  }
+
+#  file { "/home/${hadoop::params::hadoop_user}/.bashrc":
 #    ensure => present,
-#    owner => 'ubuntu',
-#    group => 'ubuntu',
-#    alias => 'ubuntu-bashrc',
+#    owner => "${hadoop::params::hadoop_user}",
+#    group => "${hadoop::params::hadoop_user}",
+#    alias => "${hadoop::params::hadoop_user}-bashrc",
 #    content => template('hadoop/bashrc.erb'),
 #    require => [ User["${hadoop::params::hadoop_user}"], File['hadoop-profile'] ],
 #  }
- 
-  file { '/home/ubuntu/hadoop-2.2.0/dfs':
+
+  #Create Name、Data And Tmp Directory
+
+  file { "${hadoop::params::hadoop_base}/hadoop-${hadoop::params::hadoop_version}/dfs":
     ensure => directory,
     owner => "${hadoop::params::hadoop_user}",
     group => "${hadoop::params::hadoop_group}",
     alias => 'hadoop-dfs',
-    require => [ User["${hadoop::params::hadoop_user}"], Group["${hadoop::params::hadoop_group}"] ],
+    require => File['hadoop-app-dir'],
   }
 
-  file { '/home/ubuntu/hadoop-2.2.0/dfs/name':
+  file { "${hadoop::params::hadoop_base}/hadoop-${hadoop::params::hadoop_version}/dfs/name":
     ensure => directory,
     owner => "${hadoop::params::hadoop_user}",
     group => "${hadoop::params::hadoop_group}",
     alias => 'hadoop-dfs-name',
-    require => [ User["${hadoop::params::hadoop_user}"], Group["${hadoop::params::hadoop_group}"], File['hadoop-dfs'] ],
+    require => File['hadoop-dfs'],
   }
 
-  file { '/home/ubuntu/hadoop-2.2.0/dfs/data':
+  file { "${hadoop::params::hadoop_base}/hadoop-${hadoop::params::hadoop_version}/dfs/data":
     ensure => directory,
     owner => "${hadoop::params::hadoop_user}",
     group => "${hadoop::params::hadoop_group}",
     alias => 'hadoop-dfs-data',
-    require => [ User["${hadoop::params::hadoop_user}"], Group["${hadoop::params::hadoop_group}"], File['hadoop-dfs'] ],
+    require => File['hadoop-dfs'],
   }
 
-  
-  file { '/home/ubuntu/hadoop-2.2.0/tmp':
+  file { "${hadoop::params::hadoop_base}/hadoop-${hadoop::params::hadoop_version}/tmp":
     ensure => directory,
     owner => "${hadoop::params::hadoop_user}",
     group => "${hadoop::params::hadoop_group}",
     alias => 'hadoop-tmp',
-    require => [ User["${hadoop::params::hadoop_user}"], Group["${hadoop::params::hadoop_group}"] ],
+    require => File['hadoop-app-dir'],
   }
 
-  file { '/home/ubuntu/hadoop-2.2.0/etc/hadoop/hadoop-env.sh':
+  #Configure Hadoop
+
+  file { "${hadoop::params::hadoop_base}/hadoop-${hadoop::params::hadoop_version}/etc/hadoop/hadoop-env.sh":
     owner => "${hadoop::params::hadoop_user}",
     group => "${hadoop::params::hadoop_group}",
-    mode => 0664,
+    mode => 0644,
     alias => 'hadoop-env-sh',
-    content => template('hadoop/hadoop-env.sh.erb'),
+    content => template('hadoop/conf/hadoop-env.sh.erb'),
   }
 
-  file { '/home/ubuntu/hadoop-2.2.0/etc/hadoop/yarn-env.sh':
+  file { "${hadoop::params::hadoop_base}/hadoop-${hadoop::params::hadoop_version}/etc/hadoop/yarn-env.sh":
     owner => "${hadoop::params::hadoop_user}",
     group => "${hadoop::params::hadoop_group}",
-    mode => 0664,
+    mode => 0644,
     alias => 'yarn-env-sh',
-    content => template('hadoop/yarn-env.sh.erb'),
+    content => template('hadoop/conf/yarn-env.sh.erb'),
   }
 
-  file { '/home/ubuntu/hadoop-2.2.0/etc/hadoop/master':
+  file { "${hadoop::params::hadoop_base}/hadoop-${hadoop::params::hadoop_version}/etc/hadoop/master":
     owner => "${hadoop::params::hadoop_user}",
     group => "${hadoop::params::hadoop_group}",
-    mode => 0664,
+    mode => 0644,
     alias => 'hadoop-master',
-    content => template('hadoop/master.erb'),
+    content => template('hadoop/conf/master.erb'),
   }
 
-  file { '/home/ubuntu/hadoop-2.2.0/etc/hadoop/slaves':
+  file { "${hadoop::params::hadoop_base}/hadoop-${hadoop::params::hadoop_version}/etc/hadoop/slaves":
     owner => "${hadoop::params::hadoop_user}",
     group => "${hadoop::params::hadoop_group}",
-    mode => 0664,
+    mode => 0644,
     alias => 'hadoop-slave',
-    content => template('hadoop/slaves.erb'),
+    content => template('hadoop/conf/slaves.erb'),
   }
 
-  file { '/home/ubuntu/hadoop-2.2.0/etc/hadoop/core-site.xml':
+  file { "${hadoop::params::hadoop_base}/hadoop-${hadoop::params::hadoop_version}/etc/hadoop/core-site.xml":
     owner => "${hadoop::params::hadoop_user}",
     group => "${hadoop::params::hadoop_group}",
-    mode => 0664,
+    mode => 0644,
     alias => 'core-site-xml',
-    content => template('hadoop/core-site.xml.erb'),
+    content => template('hadoop/conf/core-site.xml.erb'),
   }
 
-  file { '/home/ubuntu/hadoop-2.2.0/etc/hadoop/hdfs-site.xml':
+  file { "${hadoop::params::hadoop_base}/hadoop-${hadoop::params::hadoop_version}/etc/hadoop/hdfs-site.xml":
     owner => "${hadoop::params::hadoop_user}",
     group => "${hadoop::params::hadoop_group}",
-    mode => 0664,
+    mode => 0644,
     alias => 'hdfs-site-xml',
-    content => template('hadoop/hdfs-site.xml.erb'),
+    content => template('hadoop/conf/hdfs-site.xml.erb'),
   }
 
-  file { '/home/ubuntu/hadoop-2.2.0/etc/hadoop/mapred-site.xml':
+  file { "${hadoop::params::hadoop_base}/hadoop-${hadoop::params::hadoop_version}/etc/hadoop/mapred-site.xml":
     owner => "${hadoop::params::hadoop_user}",
     group => "${hadoop::params::hadoop_group}",
-    mode => 0664,
+    mode => 0644,
     alias => 'mapred-site-xml',
-    content => template('hadoop/mapred-site.xml.erb'),
+    content => template('hadoop/conf/mapred-site.xml.erb'),
   }
 
-  file { '/home/ubuntu/hadoop-2.2.0/etc/hadoop/yarn-site.xml':
+  file { "${hadoop::params::hadoop_base}/hadoop-${hadoop::params::hadoop_version}/etc/hadoop/yarn-site.xml":
     owner => "${hadoop::params::hadoop_user}",
     group => "${hadoop::params::hadoop_group}",
-    mode => 0664,
+    mode => 0644,
     alias => 'yarn-site-xml',
-    content => template('hadoop/yarn-site.xml.erb'),
+    content => template('hadoop/conf/yarn-site.xml.erb'),
   }
 }
-

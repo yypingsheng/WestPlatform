@@ -27,6 +27,7 @@ class java {
     path => ['/bin', '/usr/bin', '/usr/sbin'],
     creates => "${java::params::java_base}/jdk${java::params::java_version}",
     alias => 'untar-java',
+    require => File["${java::params::java_base}"],
 #    refreshonly => true,
 #    subscribe => File['java-source-tgz'],
     before => File['java-app-dir'],

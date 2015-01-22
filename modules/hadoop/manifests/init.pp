@@ -73,23 +73,23 @@ class hadoop {
     alias => 'hadoop-base',
   }
 
-  file { "${hadoop::params::hadoop_base}/hadoop-${hadoop::params::hadoop_version}.tar.gz":
-    owner => "${hadoop::params::hadoop_user}",
-    group => "${hadoop::params::hadoop_group}",
-    mode => 0664,
-    source => "puppet:///modules/hadoop/hadoop-${hadoop::params::hadoop_version}.tar.gz",
-    alias => 'hadoop-source-tgz',
-    before => Exec['untar-hadoop'],
-    require => File['hadoop-base'],
-  }
+#  file { "${hadoop::params::hadoop_base}/hadoop-${hadoop::params::hadoop_version}.tar.gz":
+#    owner => "${hadoop::params::hadoop_user}",
+#    group => "${hadoop::params::hadoop_group}",
+#    mode => 0664,
+#    source => "puppet:///modules/hadoop/hadoop-${hadoop::params::hadoop_version}.tar.gz",
+#    alias => 'hadoop-source-tgz',
+#    before => Exec['untar-hadoop'],
+#    require => File['hadoop-base'],
+#  }
 
   exec { "untar hadoop-${hadoop::params::hadoop_version}.tar.gz":
-    command => "tar -zxf hadoop-${hadoop::params::hadoop_version}.tar.gz",
-    cwd => "${hadoop::params::hadoop_base}",
+    command => "tar -zxf hadoop-${hadoop::params::hadoop_version}.tar.gz -C ${hadoop::params::hadoop_base}",
+    cwd => '/home/ubuntu',
     creates => "${hadoop::params::hadoop_base}/hadoop-${hadoop::params::hadoop_version}",
     alias => 'untar-hadoop',
     onlyif => "test 0 -eq $(ls -al ${hadoop::params::hadoop_base}/hadoop-${hadoop::params::hadoop_version} | grep -c bin)",
-    require => File['hadoop-source-tgz'],
+#    require => File['hadoop-source-tgz'],
     user => "${hadoop::params::hadoop_user}",
     before => File['hadoop-app-dir'],
     path => ['/bin', '/usr/bin', '/usr/sbin'],

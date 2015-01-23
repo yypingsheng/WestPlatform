@@ -21,7 +21,7 @@ node 'hadoop-master' {
     include java::params
     include hadoop
     include hadoop::params
-    include hadoop::cluster
+#    include hadoop::cluster
 
 }
 

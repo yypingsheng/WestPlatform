@@ -1,0 +1,5 @@
+#set scala environment
+
+export SCALA_HOME=<%= scope.lookupvar('hadoop::hadoop_base') %>/scala-<%= scope.lookupvar('spark::scala_version') %>
+
+export PATH=$SCALA_HOME/bin:$PATH

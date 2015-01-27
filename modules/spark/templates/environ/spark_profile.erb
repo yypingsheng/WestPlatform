@@ -1,0 +1,6 @@
+#set spark environment
+
+export SPARK_HOME=<%= scope.lookupvar('hadoop::hadoop_base') %>/spark-<%= scope.lookupvar('spark::spark_version') %>
+
+export PATH=$SPARK_HOME/bin:$PATH
+~

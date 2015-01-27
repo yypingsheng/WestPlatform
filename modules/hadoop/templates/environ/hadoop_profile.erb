@@ -1,6 +1,6 @@
 #Set Hadoop Environment
 
-export HADOOP_HOME=<%= scope.lookupvar('hadoop::params::hadoop_base') %>/hadoop-<%= scope.lookupvar('hadoop::params::hadoop_version') %>
+export HADOOP_HOME=<%= scope.lookupvar('hadoop::hadoop_base') %>/hadoop-<%= scope.lookupvar('hadoop::hadoop_version') %>
 
 export PATH=$HADOOP_HOME/bin:$PATH
 

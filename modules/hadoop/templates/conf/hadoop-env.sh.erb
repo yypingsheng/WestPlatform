@@ -46,9 +46,9 @@ done
 
 # Extra Java runtime options.  Empty by default.
 
-export HADOOP_COMMON_LIB_NATIVE_DIR=<%= scope.lookupvar('hadoop::params::hadoop_base') %>/hadoop-<%= scope.lookupvar('hadoop::params::hadoop_version') %>/lib/native
+export HADOOP_COMMON_LIB_NATIVE_DIR=<%= scope.lookupvar('hadoop::hadoop_base') %>/hadoop-<%= scope.lookupvar('hadoop::hadoop_version') %>/lib/native
 
-export HADOOP_OPTS='-Djava.library.path=<%= scope.lookupvar('hadoop::params::hadoop_base') %>/hadoop-<%= scope.lookupvar('hadoop::params::hadoop_version') %>/lib'
+export HADOOP_OPTS='-Djava.library.path=<%= scope.lookupvar('hadoop::hadoop_base') %>/hadoop-<%= scope.lookupvar('hadoop::hadoop_version') %>/lib'
 
 # Command specific options appended to HADOOP_OPTS when specified
 export HADOOP_NAMENODE_OPTS="-Dhadoop.security.logger=${HADOOP_SECURITY_LOGGER:-INFO,RFAS} -Dhdfs.audit.logger=${HDFS_AUDIT_LOGGER:-INFO,NullAppender} $HADOOP_NAMENODE_OPTS"

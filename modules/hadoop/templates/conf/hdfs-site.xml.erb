@@ -19,11 +19,11 @@
 <configuration>
     <property>
         <name>dfs.namennode.name.dir</name>
-        <value><%= scope.lookupvar('hadoop::params::hadoop_base') %>/hadoop-<%= scope.lookupvar('hadoop::params::hadoop_version') %>/dfs/name</value>
+        <value><%= scope.lookupvar('hadoop::hadoop_base') %>/hadoop-<%= scope.lookupvar('hadoop::hadoop_version') %>/dfs/name</value>
     </property>
     <property>
         <name>dfs.datanode.data.dir</name>
-        <value><%= scope.lookupvar('hadoop::params::hadoop_base') %>/hadoop-<%= scope.lookupvar('hadoop::params::hadoop_version') %>/dfs/data</value>
+        <value><%= scope.lookupvar('hadoop::hadoop_base') %>/hadoop-<%= scope.lookupvar('hadoop::hadoop_version') %>/dfs/data</value>
     </property>
     <property>
         <name>dfs.replication</name>

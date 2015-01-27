@@ -19,10 +19,10 @@
 <configuration>
     <property>
         <name>fs.defaultFS</name>
-        <value>hdfs://<%= scope.lookupvar('hadoop::params::hadoop_master') %>:9000</value>
+        <value>hdfs://<%= scope.lookupvar('hadoop::hadoop_master') %>:9000</value>
     </property>
     <property>
         <name>hadoop.tmp.dir</name>
-        <value><%= scope.lookupvar('hadoop::params::hadoop_base') %>/hadoop-<%= scope.lookupvar('hadoop::params::hadoop_version') %>/tmp</value>
+        <value><%= scope.lookupvar('hadoop::hadoop_base') %>/hadoop-<%= scope.lookupvar('hadoop::hadoop_version') %>/tmp</value>
     </property>
 </configuration>

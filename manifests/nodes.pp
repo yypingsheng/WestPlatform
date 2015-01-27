@@ -20,26 +20,26 @@ $group = 'hadoop'
 $user = 'hadoop'
 $base = "/home/$user"
 $master = 'hadoop-master'
-$slaves = ['hadoop-slave1']
+$slaves = ['hadoop-slave1', 'hadoop-slave2']
 
 node 'hadoop-master' {
   class { 'hadoop':
-    hadoop_version = $version,
-    hadoop_group = $group,
-    hadoop_user = $user,
-    hadoop_base = $base,
-    hadoop_master = $master,
-    hadoop_slaves = $slaves,    
+    hadoop_version => $version,
+    hadoop_group => $group,
+    hadoop_user => $user,
+    hadoop_base => $base,
+    hadoop_master => $master,
+    hadoop_slaves => $slaves,    
   }
 }
 
 node /hadoop-slave\d*/ {
   class { 'hadoop':
-    hadoop_version = $version,
-    hadoop_group = $group,
-    hadoop_user = $user,
-    hadoop_base = $base,
-    hadoop_master = $master,
-    hadoop_slaves = $slaves,
+    hadoop_version => $version,
+    hadoop_group => $group,
+    hadoop_user => $user,
+    hadoop_base => $base,
+    hadoop_master => $master,
+    hadoop_slaves => $slaves,
   }
 }

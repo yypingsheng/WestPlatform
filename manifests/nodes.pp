@@ -15,21 +15,31 @@ node 'tian-PC' {
     }
 }
 
+$version = '2.2.0'
+$group = 'hadoop'
+$user = 'hadoop'
+$base = "/home/$user"
+$master = 'hadoop-master'
+$slaves = ['hadoop-slave1']
+
 node 'hadoop-master' {
-
-    include java
-    include java::params
-    include hadoop
-    include hadoop::params
-#    include hadoop::cluster
-
+  class { 'hadoop':
+    hadoop_version = $version,
+    hadoop_group = $group,
+    hadoop_user = $user,
+    hadoop_base = $base,
+    hadoop_master = $master,
+    hadoop_slaves = $slaves,    
+  }
 }
 
-node 'hadoop-slave1' {
-
-    include java
-    include java::params
-    include hadoop
-    include hadoop::params
-
+node /hadoop-slave\d*/ {
+  class { 'hadoop':
+    hadoop_version = $version,
+    hadoop_group = $group,
+    hadoop_user = $user,
+    hadoop_base = $base,
+    hadoop_master = $master,
+    hadoop_slaves = $slaves,
+  }
 }

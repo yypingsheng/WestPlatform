@@ -5,7 +5,7 @@ class spark ($scala_version, $spark_version, $spark_slaves) {
 
   file { "$hadoop_base/scala-$scala_version.tgz":
     ensure => present,
-    user => "$hadoop_user"
+    owner => "$hadoop_user"
     group => "$haoop_group",
     mode => 0664,
     source => "/home/ubuntu/scala-$scala_version.tgz",
@@ -33,7 +33,7 @@ class spark ($scala_version, $spark_version, $spark_slaves) {
 
   file { "$hadoop_base/scala-$scala_version":
     ensure => directory,
-    user => "$hadoop_user",
+    owner => "$hadoop_user",
     group => "$hadoop_group",
     mode => 0755,
     alias => 'scala-add-dir',
@@ -62,7 +62,7 @@ class spark ($scala_version, $spark_version, $spark_slaves) {
 
   file { "$hadoop_base/spark-$spark_version.tgz":
     ensure => present,
-    user => "$hadoop_user"
+    owner => "$hadoop_user"
     group => "$haoop_group",
     mode => 0664,
     source => "/home/ubuntu/spark-$spark_version.tgz",
@@ -90,7 +90,7 @@ class spark ($scala_version, $spark_version, $spark_slaves) {
   
   file { "$hadoop_base/spark-$spark_version":
     ensure => directory,
-    user => "$hadoop_user",
+    owner => "$hadoop_user",
     group => "$hadoop_group",
     mode => 0755,
     alias => 'spark-add-dir',

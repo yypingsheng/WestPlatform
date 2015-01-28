@@ -48,6 +48,7 @@ class spark ($hadoop_user, $hadoop_group, $hadoop_base, $scala_version, $spark_v
     group => 'root',
     alias => 'scala-profile',
     content => template('spark/environ/scala_profile.erb'),
+    require => File['scala-app-dir'],
     notify => Exec['source-scala-profile'],
   }
 
@@ -105,6 +106,7 @@ class spark ($hadoop_user, $hadoop_group, $hadoop_base, $scala_version, $spark_v
     group => 'root',
     alias => 'spark-profile',
     content => template('spark/environ/spark_profile.erb'),
+    require => File['spark-app-dir'],
     notify => Exec['source-spark-profile'],
   }
 
@@ -123,6 +125,7 @@ class spark ($hadoop_user, $hadoop_group, $hadoop_base, $scala_version, $spark_v
     mode => 0644,
     alias => 'spark-env-sh',
     content => template('spark/conf/spark-env.sh.erb'),
+    require => File['spark-app-dir'],
   }
 
   file { "$hadoop_base/spark-$spark_version/conf/slaves":
@@ -131,12 +134,14 @@ class spark ($hadoop_user, $hadoop_group, $hadoop_base, $scala_version, $spark_v
     mode => 0644,
     alias => 'spark-slave',
     content => template('spark/conf/slaves.erb'),
+    require => File['spark-app-dir'],
   }
 
   exec { 'cp log4j.properties.template log4j.properties':
     command => 'cp log4j.properties.template log4j.properties',
     cwd => "$hadoop_base/spark-$spark_version/conf",
     creates => "$hadoop_base/spark-$spark_version/conf/log4j.properties",
+    require => File['spark-app-dir'],
     path => ['/bin', '/usr/bin', '/usr/sbin'],
   }
 }

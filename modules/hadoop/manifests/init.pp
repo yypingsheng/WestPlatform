@@ -137,6 +137,7 @@ class hadoop ($hadoop_version, $hadoop_group, $hadoop_user, $hadoop_base, $hadoo
     group => 'root',
     alias => 'hadoop-profile',
     content => template('hadoop/environ/hadoop_profile.erb'),
+    require => File['hadoop-app-dir'],
     notify => Exec['source-hadoop-profile'],
   }
 
@@ -189,6 +190,7 @@ class hadoop ($hadoop_version, $hadoop_group, $hadoop_user, $hadoop_base, $hadoo
     mode => 0644,
     alias => 'hadoop-env-sh',
     content => template('hadoop/conf/hadoop-env.sh.erb'),
+    require => File['hadoop-app-dir'],
   }
 
   file { "$hadoop_base/hadoop-$hadoop_version/etc/hadoop/yarn-env.sh":
@@ -197,6 +199,7 @@ class hadoop ($hadoop_version, $hadoop_group, $hadoop_user, $hadoop_base, $hadoo
     mode => 0644,
     alias => 'yarn-env-sh',
     content => template('hadoop/conf/yarn-env.sh.erb'),
+    require => File['hadoop-app-dir'],
   }
 
   file { "$hadoop_base/hadoop-$hadoop_version/etc/hadoop/master":
@@ -205,6 +208,7 @@ class hadoop ($hadoop_version, $hadoop_group, $hadoop_user, $hadoop_base, $hadoo
     mode => 0644,
     alias => 'hadoop-master',
     content => template('hadoop/conf/master.erb'),
+    require => File['hadoop-app-dir'],
   }
 
   file { "$hadoop_base/hadoop-$hadoop_version/etc/hadoop/slaves":
@@ -213,6 +217,7 @@ class hadoop ($hadoop_version, $hadoop_group, $hadoop_user, $hadoop_base, $hadoo
     mode => 0644,
     alias => 'hadoop-slave',
     content => template('hadoop/conf/slaves.erb'),
+    require => File['hadoop-app-dir'],
   }
 
   file { "$hadoop_base/hadoop-$hadoop_version/etc/hadoop/core-site.xml":
@@ -221,6 +226,7 @@ class hadoop ($hadoop_version, $hadoop_group, $hadoop_user, $hadoop_base, $hadoo
     mode => 0644,
     alias => 'core-site-xml',
     content => template('hadoop/conf/core-site.xml.erb'),
+    require => File['hadoop-app-dir'],
   }
 
   file { "$hadoop_base/hadoop-$hadoop_version/etc/hadoop/hdfs-site.xml":
@@ -229,6 +235,7 @@ class hadoop ($hadoop_version, $hadoop_group, $hadoop_user, $hadoop_base, $hadoo
     mode => 0644,
     alias => 'hdfs-site-xml',
     content => template('hadoop/conf/hdfs-site.xml.erb'),
+    require => File['hadoop-app-dir'],
   }
 
   file { "$hadoop_base/hadoop-$hadoop_version/etc/hadoop/mapred-site.xml":
@@ -237,6 +244,7 @@ class hadoop ($hadoop_version, $hadoop_group, $hadoop_user, $hadoop_base, $hadoo
     mode => 0644,
     alias => 'mapred-site-xml',
     content => template('hadoop/conf/mapred-site.xml.erb'),
+    require => File['hadoop-app-dir'],
   }
 
   file { "$hadoop_base/hadoop-$hadoop_version/etc/hadoop/yarn-site.xml":
@@ -245,5 +253,6 @@ class hadoop ($hadoop_version, $hadoop_group, $hadoop_user, $hadoop_base, $hadoo
     mode => 0644,
     alias => 'yarn-site-xml',
     content => template('hadoop/conf/yarn-site.xml.erb'),
+    require => File['hadoop-app-dir'],
   }
 }

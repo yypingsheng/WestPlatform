@@ -52,10 +52,20 @@ class spark ($hadoop_user, $hadoop_group, $hadoop_base, $scala_version, $spark_v
     notify => Exec['source-scala-profile'],
   }
 
-  exec { 'source scala profile':
-    command => 'source /etc/profile',
-    cwd => '/etc',
-    alias => 'source-scala-profile',
+  file { "$hadoop_base/source_scala.sh":
+    ensure => present,
+    owner => "$hadoop_user",
+    group => "$hadoop_group",
+    alias => 'source-scala',
+    centent => template('spark/environ/source_scala.sh.erb'),
+    require => File['hadoop-base'],
+  }
+
+  exec { 'bash source_scala.sh':
+    command => 'bash ./source_scala.sh',
+    cwd => "$hadoop_base",
+    alias => 'bash-source-scala',
+    require => File['source-scala'],
     path => ['/bin', '/usr/bin', '/usr/sbin'],
   }
 
@@ -110,10 +120,20 @@ class spark ($hadoop_user, $hadoop_group, $hadoop_base, $scala_version, $spark_v
     notify => Exec['source-spark-profile'],
   }
 
-  exec { 'source spark profile':
-    command => 'source /etc/profile',
-    cwd => '/etc',
-    alias => 'source-spark-profile',
+  file { "$hadoop_base/source_spark.sh":
+    ensure => present,
+    owner => "$hadoop_user",
+    group => "$hadoop_group",
+    alias => 'source-spark',
+    centent => template('spark/environ/source_spark.sh.erb'),
+    require => File['hadoop-base'],
+  }
+
+  exec { 'bash source_spark.sh':
+    command => 'bash ./source_spark.sh',
+    cwd => "$hadoop_base",
+    alias => 'bash-source-spark',
+    require => File['source-spark'],
     path => ['/bin', '/usr/bin', '/usr/sbin'],
   }
 

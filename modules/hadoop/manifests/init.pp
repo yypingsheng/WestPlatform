@@ -44,7 +44,7 @@ class hadoop ($hadoop_version, $hadoop_group, $hadoop_user, $hadoop_base, $hadoo
   }
 
   exec { 'add hosts':
-    command => "$hadoop_base/host.sh",
+    command => "bash $hadoop_base/host.sh",
     cwd => "$hadoop_base",
     alias => 'add-hosts',
     require => [ File['host-sh'], File['hostlist'] ],
@@ -140,11 +140,21 @@ class hadoop ($hadoop_version, $hadoop_group, $hadoop_user, $hadoop_base, $hadoo
     require => File['hadoop-app-dir'],
     notify => Exec['source-hadoop-profile'],
   }
+  
+  file { "$hadoop_base/source_hadoop.sh":
+    ensure => present,
+    owner => "$hadoop_user",
+    group => "$hadoop_group",
+    alias => 'source-hadoop',
+    centent => template('hadoop/environ/source_hadoop.sh.erb'),
+    require => File['hadoop-base'],
+  }
 
-  exec { 'source hadoop profile':
-    command => 'source /etc/profile',
-    cwd => '/etc',
-    alias => 'source-hadoop-profile',
+  exec { 'bash source_hadoop.sh':
+    command => 'bash ./source_hadoop.sh',
+    cwd => "$hadoop_base",
+    alias => 'bash-source-hadoop',
+    require => File['source-hadoop'],
     path => ['/bin', '/usr/bin', '/usr/sbin'],
   }
 

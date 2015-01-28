@@ -53,10 +53,20 @@ class java {
     notify => Exec['source-java-profile'],
   }
 
-  exec { 'source java profile':
-    command => 'source /etc/profile',
-    cwd => '/etc',
-    alias => 'source-java-profile',
+  file { "$java_base/source_java.sh":
+    ensure => present,
+    owner => 'root',
+    group => 'root',
+    alias => 'source-java',
+    centent => template('java/source_java.sh.erb'),
+    require => File['java-base'],
+  }
+
+  exec { 'bash source_java.sh':
+    command => 'bash ./source_java.sh',
+    cwd => "$java_base",
+    alias => 'bash-source-java',
+    require => File['source-java'],
     path => ['/bin', '/usr/bin', '/usr/sbin'],
   }
 	

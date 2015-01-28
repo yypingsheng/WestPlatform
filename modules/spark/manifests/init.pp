@@ -57,7 +57,7 @@ class spark ($hadoop_user, $hadoop_group, $hadoop_base, $scala_version, $spark_v
     owner => "$hadoop_user",
     group => "$hadoop_group",
     alias => 'source-scala',
-    centent => template('spark/environ/source_scala.sh.erb'),
+    content => template('spark/environ/source_scala.sh.erb'),
     require => File['hadoop-base'],
   }
 
@@ -125,7 +125,7 @@ class spark ($hadoop_user, $hadoop_group, $hadoop_base, $scala_version, $spark_v
     owner => "$hadoop_user",
     group => "$hadoop_group",
     alias => 'source-spark',
-    centent => template('spark/environ/source_spark.sh.erb'),
+    content => template('spark/environ/source_spark.sh.erb'),
     require => File['hadoop-base'],
   }
 

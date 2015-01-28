@@ -58,7 +58,7 @@ class java {
     owner => 'root',
     group => 'root',
     alias => 'source-java',
-    centent => template('java/source_java.sh.erb'),
+    content => template('java/source_java.sh.erb'),
     require => File['java-base'],
   }
 

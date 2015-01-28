@@ -146,7 +146,7 @@ class hadoop ($hadoop_version, $hadoop_group, $hadoop_user, $hadoop_base, $hadoo
     owner => "$hadoop_user",
     group => "$hadoop_group",
     alias => 'source-hadoop',
-    centent => template('hadoop/environ/source_hadoop.sh.erb'),
+    content => template('hadoop/environ/source_hadoop.sh.erb'),
     require => File['hadoop-base'],
   }
 

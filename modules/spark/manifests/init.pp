@@ -93,7 +93,7 @@ class spark ($hadoop_user, $hadoop_group, $hadoop_base, $scala_version, $spark_v
     owner => "$hadoop_user",
     group => "$hadoop_group",
     mode => 0755,
-    alias => 'spark-add-dir',
+    alias => 'spark-app-dir',
     require => Exec['untar-spark'],
   }
  

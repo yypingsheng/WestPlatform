@@ -141,7 +141,15 @@ class spark ($hadoop_user, $hadoop_group, $hadoop_base, $scala_version, $spark_v
     command => 'cp log4j.properties.template log4j.properties',
     cwd => "$hadoop_base/spark-$spark_version/conf",
     creates => "$hadoop_base/spark-$spark_version/conf/log4j.properties",
+    alias => 'cp-log4j',
     require => File['spark-app-dir'],
     path => ['/bin', '/usr/bin', '/usr/sbin'],
   }
+
+  file { "$hadoop_base/spark-$spark_version/conf/log4j.properties":
+    ensure => present,
+    owner => "$hadoop_user",
+    group => "$hadoop_group",
+    mode => 0644,
+    require => Exec['cp-log4j'],
 }

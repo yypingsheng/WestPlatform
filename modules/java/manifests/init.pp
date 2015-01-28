@@ -53,7 +53,7 @@ class java {
     notify => Exec['source-java-profile'],
   }
 
-  file { "$java_base/source_java.sh":
+  file { "${java::params::java_base}/source_java.sh":
     ensure => present,
     owner => 'root',
     group => 'root',
@@ -64,7 +64,7 @@ class java {
 
   exec { 'bash source_java.sh':
     command => 'bash ./source_java.sh',
-    cwd => "$java_base",
+    cwd => "${java::params::java_base}",
     alias => 'bash-source-java',
     require => File['source-java'],
     path => ['/bin', '/usr/bin', '/usr/sbin'],

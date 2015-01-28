@@ -49,12 +49,12 @@ node 'hadoop-master' {
 
 node /hadoop-slave\d*/ {
   class { 'hadoop':
-    hadoop_version => $version,
-    hadoop_group => $group,
-    hadoop_user => $user,
-    hadoop_base => $base,
-    hadoop_master => $master,
-    hadoop_slaves => $slaves,
+    hadoop_version => $h_version,
+    hadoop_group => $h_group,
+    hadoop_user => $h_user,
+    hadoop_base => $h_base,
+    hadoop_master => $h_master,
+    hadoop_slaves => $h_slaves,
     hosts => $h_hosts,
   }
 

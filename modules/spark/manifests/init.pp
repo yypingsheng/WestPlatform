@@ -54,7 +54,7 @@ class spark ($scala_version, $spark_version, $spark_slaves) {
   exec { 'source scala profile':
     command => 'source /etc/profile',
     cwd => '/etc',
-    alais => 'source-scala-profile',
+    alias => 'source-scala-profile',
     path => ['/bin', '/usr/bin', '/usr/sbin'],
   }
 
@@ -111,7 +111,7 @@ class spark ($scala_version, $spark_version, $spark_slaves) {
   exec { 'source spark profile':
     command => 'source /etc/profile',
     cwd => '/etc',
-    alais => 'source-spark-profile',
+    alias => 'source-spark-profile',
     path => ['/bin', '/usr/bin', '/usr/sbin'],
   }
 

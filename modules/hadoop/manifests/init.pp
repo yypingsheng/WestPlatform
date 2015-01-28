@@ -32,7 +32,7 @@ class hadoop ($hadoop_version, $hadoop_group, $hadoop_user, $hadoop_base, $hadoo
     owner => "$hadoop_user",
     group => "$hadoop_group",
     mode => 0744,
-    alias => 'host-sh'
+    alias => 'host-sh',
     source => 'puppet:///modules/hadoop/hosts/host.sh',
   }
 

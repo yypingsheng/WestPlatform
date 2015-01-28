@@ -122,16 +122,15 @@ class hadoop ($hadoop_version, $hadoop_group, $hadoop_user, $hadoop_base, $hadoo
     group => 'root',
     alias => 'hadoop-profile',
     content => template('hadoop/environ/hadoop_profile.erb'),
+    notify => Exec['source-hadoop-profile'],
   }
 
-#  file { "/home/${hadoop::params::hadoop_user}/.bashrc":
-#    ensure => present,
-#    owner => "${hadoop::params::hadoop_user}",
-#    group => "${hadoop::params::hadoop_user}",
-#    alias => "${hadoop::params::hadoop_user}-bashrc",
-#    content => template('hadoop/bashrc.erb'),
-#    require => [ User["${hadoop::params::hadoop_user}"], File['hadoop-profile'] ],
-#  }
+  exec { 'source hadoop profile':
+    command => 'source /etc/profile',
+    cwd => '/etc',
+    alais => 'source-hadoop-profile',
+    path => ['/bin', '/usr/bin', '/usr/sbin'],
+  }
 
   #Create Name、Data And Tmp Directory
 

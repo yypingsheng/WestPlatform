@@ -1,4 +1,4 @@
-class hadoop ($hadoop_version, $hadoop_group, $hadoop_user, $hadoop_base, $hadoop_master, $hadoop_slaves) {
+class hadoop ($hadoop_version, $hadoop_group, $hadoop_user, $hadoop_base, $hadoop_master, $hadoop_slaves, $hosts) {
 
   include java
 
@@ -27,14 +27,29 @@ class hadoop ($hadoop_version, $hadoop_group, $hadoop_user, $hadoop_base, $hadoo
 
   #Add Nodes To Hosts, Make Local DNS
 
-#  file { '/etc/hosts':
-#    ensure => present,
-#    owner => 'root',
-#    group => 'root',
-#    mode => 0644,
-#    alias => 'etc-hosts',
-#    source => 'puppet:///modules/hadoop/hosts/hosts',
-#  }
+  file { "$hadoop_base/host.sh":
+    ensure => present,
+    owner => "$hadoop_user",
+    group => "$hadoop_group",
+    mode => 0744,
+    alias => 'host-sh'
+    source => 'puppet:///modules/hadoop/hosts/host.sh',
+  }
+
+  file { "$hadoop_base/hostlist":
+    ensure => present,
+    content => "$hosts",
+    alias => 'hostlist',
+    before => Exec['add-hosts'],
+  }
+
+  exec { 'add hosts':
+    command => "$hadoop_base/host.sh",
+    cwd => "$hadoop_base",
+    alias => 'add-hosts',
+    require => [ File['host-sh'], File['hostlist'] ],
+    path => ['/bin', '/usr/bin', '/usr/sbin'],
+  }
 
   #Configure SSH, No Password Login
 

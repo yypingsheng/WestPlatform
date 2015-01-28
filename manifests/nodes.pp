@@ -22,6 +22,7 @@ $h_user = 'hadoop'
 $h_base = "/home/$user"
 $h_master = 'hadoop-master'
 $h_slaves = ['hadoop-slave1', 'hadoop-slave2']
+$h_hosts = "192.168.28.111 hadoop-master\n192.168.28.112 hadoop-slave1\n192.168.28.114 hadoop-slave2\n"
 
 #spark params
 $sc_version = '2.10.4'
@@ -35,7 +36,8 @@ node 'hadoop-master' {
     hadoop_user => $h_user,
     hadoop_base => $h_base,
     hadoop_master => $h_master,
-    hadoop_slaves => $h_slaves,    
+    hadoop_slaves => $h_slaves,
+    hosts => $h_hosts,    
   }
 
   class { 'spark':
@@ -53,6 +55,7 @@ node /hadoop-slave\d*/ {
     hadoop_base => $base,
     hadoop_master => $master,
     hadoop_slaves => $slaves,
+    hosts => $h_hosts,
   }
 
   class { 'spark':

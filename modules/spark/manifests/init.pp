@@ -172,4 +172,5 @@ class spark ($hadoop_user, $hadoop_group, $hadoop_base, $scala_version, $spark_v
     group => "$hadoop_group",
     mode => 0644,
     require => Exec['cp-log4j'],
+  }
 }

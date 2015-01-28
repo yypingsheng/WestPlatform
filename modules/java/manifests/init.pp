@@ -50,7 +50,7 @@ class java {
     group => 'root',
     alias => 'java-profile',
     content => template('java/java_profile.erb'),
-    notify => Exec['source-java-profile'],
+    notify => Exec['bash-source-java'],
   }
 
   file { "${java::params::java_base}/source_java.sh":

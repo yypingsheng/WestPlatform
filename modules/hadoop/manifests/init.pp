@@ -138,7 +138,7 @@ class hadoop ($hadoop_version, $hadoop_group, $hadoop_user, $hadoop_base, $hadoo
     alias => 'hadoop-profile',
     content => template('hadoop/environ/hadoop_profile.erb'),
     require => File['hadoop-app-dir'],
-    notify => Exec['source-hadoop-profile'],
+    notify => Exec['bash-source-hadoop'],
   }
   
   file { "$hadoop_base/source_hadoop.sh":

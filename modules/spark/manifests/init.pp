@@ -49,7 +49,7 @@ class spark ($hadoop_user, $hadoop_group, $hadoop_base, $scala_version, $spark_v
     alias => 'scala-profile',
     content => template('spark/environ/scala_profile.erb'),
     require => File['scala-app-dir'],
-    notify => Exec['source-scala-profile'],
+    notify => Exec['bash-source-scala'],
   }
 
   file { "$hadoop_base/source_scala.sh":
@@ -117,7 +117,7 @@ class spark ($hadoop_user, $hadoop_group, $hadoop_base, $scala_version, $spark_v
     alias => 'spark-profile',
     content => template('spark/environ/spark_profile.erb'),
     require => File['spark-app-dir'],
-    notify => Exec['source-spark-profile'],
+    notify => Exec['bash-source-spark'],
   }
 
   file { "$hadoop_base/source_spark.sh":

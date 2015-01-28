@@ -48,6 +48,14 @@ class spark ($scala_version, $spark_version, $spark_slaves) {
     group => 'root',
     alias => 'scala-profile',
     content => template('spark/environ/scala_profile.erb'),
+    notify => Exec['source-scala-profile'],
+  }
+
+  exec { 'source scala profile':
+    command => 'source /etc/profile',
+    cwd => '/etc',
+    alais => 'source-scala-profile',
+    path => ['/bin', '/usr/bin', '/usr/sbin'],
   }
 
   #spark package
@@ -97,6 +105,14 @@ class spark ($scala_version, $spark_version, $spark_slaves) {
     group => 'root',
     alias => 'spark-profile',
     content => template('spark/environ/spark_profile.erb'),
+    notify => Exec['source-spark-profile'],
+  }
+
+  exec { 'source spark profile':
+    command => 'source /etc/profile',
+    cwd => '/etc',
+    alais => 'source-spark-profile',
+    path => ['/bin', '/usr/bin', '/usr/sbin'],
   }
 
   #confige spark

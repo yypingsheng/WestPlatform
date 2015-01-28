@@ -143,7 +143,7 @@ class hadoop ($hadoop_version, $hadoop_group, $hadoop_user, $hadoop_base, $hadoo
   exec { 'source hadoop profile':
     command => 'source /etc/profile',
     cwd => '/etc',
-    alais => 'source-hadoop-profile',
+    alias => 'source-hadoop-profile',
     path => ['/bin', '/usr/bin', '/usr/sbin'],
   }
 

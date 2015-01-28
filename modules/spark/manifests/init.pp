@@ -6,7 +6,7 @@ class spark ($scala_version, $spark_version, $spark_slaves) {
   file { "$hadoop_base/scala-$scala_version.tgz":
     ensure => present,
     owner => "$hadoop_user",
-    group => "$haoop_group",
+    group => "$hadoop_group",
     mode => 0664,
     source => "/home/ubuntu/scala-$scala_version.tgz",
     alias => 'scala-source-tgz',

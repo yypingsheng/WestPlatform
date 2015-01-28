@@ -41,9 +41,9 @@ node 'hadoop-master' {
   }
 
   class { 'spark':
-    scala_version = $sc_version,
-    spark_version = $sp_version,
-    spark_slaves = $sp_slaves,
+    scala_version => $sc_version,
+    spark_version => $sp_version,
+    spark_slaves => $sp_slaves,
   }
 }
 
@@ -59,8 +59,8 @@ node /hadoop-slave\d*/ {
   }
 
   class { 'spark':
-    scala_version = $sc_version,
-    spark_version = $sp_version,
-    spark_slaves = $sp_slaves,
+    scala_version => $sc_version,
+    spark_version => $sp_version,
+    spark_slaves => $sp_slaves,
   }
 }

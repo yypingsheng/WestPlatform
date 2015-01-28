@@ -15,21 +15,33 @@ node 'tian-PC' {
     }
 }
 
-$version = '2.2.0'
-$group = 'hadoop'
-$user = 'hadoop'
-$base = "/home/$user"
-$master = 'hadoop-master'
-$slaves = ['hadoop-slave1', 'hadoop-slave2']
+#hadoop params
+$h_version = '2.2.0'
+$h_group = 'hadoop'
+$h_user = 'hadoop'
+$h_base = "/home/$user"
+$h_master = 'hadoop-master'
+$h_slaves = ['hadoop-slave1', 'hadoop-slave2']
+
+#spark params
+$sc_version = '2.10.4'
+$sp_version = '1.0.0-bin-hadoop2'
+$sp_slaves = $h_slaves
 
 node 'hadoop-master' {
   class { 'hadoop':
-    hadoop_version => $version,
-    hadoop_group => $group,
-    hadoop_user => $user,
-    hadoop_base => $base,
-    hadoop_master => $master,
-    hadoop_slaves => $slaves,    
+    hadoop_version => $h_version,
+    hadoop_group => $h_group,
+    hadoop_user => $h_user,
+    hadoop_base => $h_base,
+    hadoop_master => $h_master,
+    hadoop_slaves => $h_slaves,    
+  }
+
+  class { 'spark':
+    scala_version = $sc_version,
+    spark_version = $sp_version,
+    spark_slaves = $sp_slaves,
   }
 }
 
@@ -41,5 +53,11 @@ node /hadoop-slave\d*/ {
     hadoop_base => $base,
     hadoop_master => $master,
     hadoop_slaves => $slaves,
+  }
+
+  class { 'spark':
+    scala_version = $sc_version,
+    spark_version = $sp_version,
+    spark_slaves = $sp_slaves,
   }
 }

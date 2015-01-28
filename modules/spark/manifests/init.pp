@@ -1,5 +1,5 @@
-class spark ($scala_version, $spark_version, $spark_slaves) {
-  include hadoop
+class spark ($hadoop_user, $hadoop_group, $hadoop_base, $scala_version, $spark_version, $spark_slaves) {
+  require hadoop
 
   #scala package
 

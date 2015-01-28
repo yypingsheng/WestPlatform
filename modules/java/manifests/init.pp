@@ -56,7 +56,7 @@ class java {
   exec { 'source java profile':
     command => 'source /etc/profile',
     cwd => '/etc',
-    alais => 'source-java-profile',
+    alias => 'source-java-profile',
     path => ['/bin', '/usr/bin', '/usr/sbin'],
   }
 	

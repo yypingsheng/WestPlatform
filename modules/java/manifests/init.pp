@@ -50,6 +50,14 @@ class java {
     group => 'root',
     alias => 'java-profile',
     content => template('java/java_profile.erb'),
+    notify => Exec['source-java-profile'],
+  }
+
+  exec { 'source java profile':
+    command => 'source /etc/profile',
+    cwd => '/etc',
+    alais => 'source-java-profile',
+    path => ['/bin', '/usr/bin', '/usr/sbin'],
   }
 	
 }

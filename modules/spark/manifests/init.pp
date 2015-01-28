@@ -24,7 +24,7 @@ class spark ($scala_version, $spark_version, $spark_slaves) {
     require => File['scala-source-tgz'],
     user => "$hadoop_user",
     refreshonly => true,
-    subcrible => File['scala-source-tgz'],
+    subscribe => File['scala-source-tgz'],
     before => File['scala-app-dir'],
     path => ['/bin', '/usr/bin', '/usr/sbin'],
   }
@@ -81,7 +81,7 @@ class spark ($scala_version, $spark_version, $spark_slaves) {
     require => File['spark-source-tgz'],
     user => "$hadoop_user",
     refreshonly => true,
-    subcrible => File['spark-source-tgz'],
+    subscribe => File['spark-source-tgz'],
     before => File['spark-app-dir'],
     path => ['/bin', '/usr/bin', '/usr/sbin'],
   }

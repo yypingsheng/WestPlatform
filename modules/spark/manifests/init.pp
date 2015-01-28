@@ -63,7 +63,7 @@ class spark ($hadoop_user, $hadoop_group, $hadoop_base, $scala_version, $spark_v
   file { "$hadoop_base/spark-$spark_version.tgz":
     ensure => present,
     owner => "$hadoop_user",
-    group => "$haoop_group",
+    group => "$hadoop_group",
     mode => 0664,
     source => "/home/ubuntu/spark-$spark_version.tgz",
     alias => 'spark-source-tgz',

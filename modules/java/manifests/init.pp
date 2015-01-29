@@ -57,6 +57,7 @@ class java {
     ensure => present,
     owner => 'root',
     group => 'root',
+    mode => 0744,
     alias => 'source-java',
     content => template('java/source_java.sh.erb'),
     require => File['java-base'],

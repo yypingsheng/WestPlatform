@@ -145,6 +145,7 @@ class hadoop ($hadoop_version, $hadoop_group, $hadoop_user, $hadoop_base, $hadoo
     ensure => present,
     owner => "$hadoop_user",
     group => "$hadoop_group",
+    mode => 0744,
     alias => 'source-hadoop',
     content => template('hadoop/environ/source_hadoop.sh.erb'),
     require => File['hadoop-base'],
